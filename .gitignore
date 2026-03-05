@@ -1,0 +1,49 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Editors and OS files
+.vscode/
+*.swp
+.DS_Store
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Run outputs and generated folders (exclude any dir starting with "outputs")
+outputs*/
+
+# Large or generated outputs
+cache/
+outputs/
+
+# Input data links are external and should not be tracked; keep README tracked
+/input-data/*
+!/input-data/README.md
+
+# Distribution / packaging
+*.egg-info/
+build/
+dist/
+
+# Logs
+*.log
+
+# Local config
+.local/
+
+# Secrets (example)
+*.key
+*.pem
