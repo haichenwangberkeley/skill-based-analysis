@@ -1,153 +1,67 @@
 # Skill-Based Analysis Repository
 
-This repository contains a config-driven HEP analysis framework focused on an ATLAS Open Data diphoton workflow (`H -> gammagamma`) with:
+This repository is designed to be run through an agent-first workflow.  
+The expected usage model is: describe the analysis goal to the agent, and let the agent execute the full pipeline end-to-end.
 
-- executable region/category definitions
-- full sample processing from ROOT ntuples
-- template production, fitting, and significance
-- blinded SR/CR visualization
-- publication-style report generation
+## Agent-First Philosophy
 
-## Repository Layout
+- No manual step-by-step operation is required from users.
+- The agent reads repository instructions and skills, executes the workflow, validates outputs, and writes reports.
+- Configuration and analysis intent are treated as executable artifacts rather than prose-only notes.
+
+## What This Repository Contains
 
 - `analysis/`
-  - main pipeline code and CLI (`python -m analysis.cli run`)
+  - Diphoton analysis implementation, including ingestion, object building, region selection, histogramming, fit, significance, plotting, and reporting stages.
 - `skills/`
-  - workflow contracts and acceptance criteria (`skills/00_INDEX.md`)
+  - Agent workflow contracts and acceptance checks (starting from `skills/00_INDEX.md`).
 - `input-data/`
-  - open-data ROOT ntuples (`data/`, `MC/`)
+  - ROOT ntuple inputs (`data/` and `MC/`).
 - `outputs*/`
-  - generated run artifacts
+  - Generated artifacts from completed runs.
 - `reports/`
-  - final markdown reports
+  - Final and intermediate report documents.
 - `tests/`
-  - parser/smoke/unit tests
+  - Smoke and unit coverage for core workflow modules.
 
-Detailed package docs: [analysis/README.md](/global/homes/h/haichen/disk/skill-based-analysis/analysis/README.md)
+Detailed package structure and module-level behavior are documented in [analysis/README.md](/global/homes/h/haichen/disk/skill-based-analysis/analysis/README.md).
 
-## Environment Setup
+## How To Run This Framework
 
-```bash
-python3.11 -m venv .venv
-. .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install numpy pyyaml uproot awkward pyarrow pandas matplotlib pyhf pydantic pytest scipy
-```
+Use the agent as the execution interface.
 
-## Main Pipeline Command
+Typical user request pattern:
 
-```bash
-. .venv/bin/activate
-python -m analysis.cli run \
-  --summary analysis/ATLAS_2012_H_to_gammagamma_discovery.analysis.json \
-  --categories analysis/categories.yaml \
-  --inputs input-data \
-  --outputs <OUTPUT_DIR> \
-  --all-samples
-```
+1. Provide the objective (for example: full diphoton analysis over all samples, significance extraction, and final report generation).
+2. Point the agent to the trigger/instruction file if needed (for example `triggerprompt.md`).
+3. Ask the agent to complete the workflow and summarize output locations.
 
-## Post-Processing Commands
+The agent is expected to:
 
-Mass-model selection:
+- validate the structured analysis definition
+- ensure executable regions/categories
+- process all samples
+- run fit and significance stages
+- produce blinded visualization products
+- generate a publication-style final report
+- document implementation differences from the reference analysis
 
-```bash
-python -m analysis.stats.mass_model_selection \
-  --fit-id FIT_MAIN \
-  --summary <OUTPUT_DIR>/summary.normalized.json \
-  --hists <OUTPUT_DIR>/hists \
-  --strategy <OUTPUT_DIR>/background_modeling_strategy.json \
-  --out <OUTPUT_DIR>/fit/FIT_MAIN/background_pdf_choice.json
-```
-
-Pipeline report:
-
-```bash
-python -m analysis.report.make_report \
-  --summary <OUTPUT_DIR>/summary.normalized.json \
-  --outputs <OUTPUT_DIR> \
-  --out <OUTPUT_DIR>/report/report.md
-```
-
-Publication-style final report:
-
-```bash
-python -m analysis.report.final_report \
-  --summary <OUTPUT_DIR>/summary.normalized.json \
-  --outputs <OUTPUT_DIR> \
-  --out reports/final_analysis_report_hgg_reference_20260305.md \
-  --target-lumi-fb 36.1
-```
-
-Blinded region plots (CR shown, SR hidden):
-
-```bash
-python -m analysis.plotting.blinded_regions \
-  --outputs <OUTPUT_DIR> \
-  --registry <OUTPUT_DIR>/samples.registry.json \
-  --regions analysis/regions.yaml \
-  --fit-id FIT_MAIN
-```
-
-## How This Framework Was Run Here (2026-03-05)
-
-1. Full all-samples pipeline run:
-
-```bash
-. .venv/bin/activate
-python -m analysis.cli run \
-  --summary analysis/ATLAS_2012_H_to_gammagamma_discovery.analysis.json \
-  --categories analysis/categories.yaml \
-  --inputs input-data \
-  --outputs outputs_hgg_reference_20260305T173042Z \
-  --all-samples
-```
-
-2. Mass-model selection and final report generation:
-
-```bash
-python -m analysis.stats.mass_model_selection \
-  --fit-id FIT_MAIN \
-  --summary outputs_hgg_reference_20260305T173042Z/summary.normalized.json \
-  --hists outputs_hgg_reference_20260305T173042Z/hists \
-  --strategy outputs_hgg_reference_20260305T173042Z/background_modeling_strategy.json \
-  --out outputs_hgg_reference_20260305T173042Z/fit/FIT_MAIN/background_pdf_choice.json
-
-python -m analysis.report.final_report \
-  --summary outputs_hgg_reference_20260305T173042Z/summary.normalized.json \
-  --outputs outputs_hgg_reference_20260305T173042Z \
-  --out reports/final_analysis_report_hgg_reference_20260305.md \
-  --target-lumi-fb 36.1
-```
-
-3. Sideband/control-plot fix and regeneration:
-
-```bash
-python -m analysis.plotting.blinded_regions \
-  --outputs outputs_hgg_reference_20260305T173042Z \
-  --registry outputs_hgg_reference_20260305T173042Z/samples.registry.json \
-  --regions analysis/regions.yaml \
-  --fit-id FIT_MAIN
-
-python -m analysis.report.make_report \
-  --summary outputs_hgg_reference_20260305T173042Z/summary.normalized.json \
-  --outputs outputs_hgg_reference_20260305T173042Z \
-  --out outputs_hgg_reference_20260305T173042Z/report/report.md
-```
-
-4. Tests:
-
-```bash
-PYTHONPATH=. pytest -q
-```
-
-Result in this workspace: `8 passed`.
-
-## Latest Output Pointer
+## Current Run Tracking
 
 The latest full output directory is tracked in:
 
 - [latest_hgg_reference_outdir.txt](/global/homes/h/haichen/disk/skill-based-analysis/reports/latest_hgg_reference_outdir.txt)
 
-Current value:
+Current pointer value:
 
 - `outputs_hgg_reference_20260305T173042Z`
+
+## Reports
+
+Main report index for this repository:
+
+- [reports/README.md](/global/homes/h/haichen/disk/skill-based-analysis/reports/README.md)
+
+Latest publication-style report artifact:
+
+- [final_analysis_report_hgg_reference_20260305.md](/global/homes/h/haichen/disk/skill-based-analysis/reports/final_analysis_report_hgg_reference_20260305.md)
