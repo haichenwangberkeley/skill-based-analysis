@@ -135,3 +135,4 @@ Core pipeline skills:
 
 Verification skills:
 - `13_VISUAL_VERIFICATION.md`
+- `24_HISTOGRAM_PLOTTING_INVARIANTS.md`
