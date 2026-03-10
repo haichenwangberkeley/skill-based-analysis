@@ -20,6 +20,7 @@ Policy requirements:
 - when the selected runtime pipeline is not fully JSON-native, create an explicit mapping from JSON intent to runtime configuration and document deviations
 - if a user constraint overrides JSON content (for example luminosity, backend, or blinding scope), record the override explicitly
 - do not silently drop JSON-defined fit regions, observables, or process roles
+- at execution-phase boundaries, record skill-refresh checkpoints per `governance/skill_refresh_and_checkpointing.md`
 
 ## Layer 2 — Workflow Contract
 ### Inputs
@@ -32,6 +33,7 @@ Policy requirements:
 - `outputs/report/spec_to_runtime_mapping.json`
 - `outputs/report/deviations_from_spec.json`
 - `outputs/report/execution_contract.json`
+- checkpoint entries in `outputs/report/skill_refresh_log.jsonl` for JSON validation and execution-contract phases
 
 ### Acceptance Checks
 - analysis JSON exists and is readable
@@ -40,6 +42,7 @@ Policy requirements:
 - each runtime override is listed with `source = user_override`
 - each approximation/substitution is listed with reason and expected analysis impact
 - final report references the JSON path used for the run
+- JSON-validation and execution-contract checkpoints are present in skill-refresh artifacts
 
 ### Minimum `execution_contract.json` fields
 - `analysis_json`
@@ -68,3 +71,4 @@ Policy requirements:
 - `governance/full_statistics_execution_policy.md`
 - `core_pipeline/final_analysis_report_agent_workflow.md`
 - `core_pipeline/final_report_review_and_handoff.md`
+- `governance/skill_refresh_and_checkpointing.md`

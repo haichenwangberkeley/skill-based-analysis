@@ -32,6 +32,7 @@ Core policy requirements:
 - Require execution of post-run skill extraction (`meta/extract_new_skill_from_failure.md`) for every completed run; missing extraction blocks handoff-ready status.
 - Use the term **cut flow** consistently.
 - Default production runs must use full statistics unless partial scope is explicitly requested or a same-task fast-test then full-run pattern is declared.
+- Require skill-refresh/checkpoint governance during execution; missing refresh/checkpoint artifacts block handoff-ready status.
 
 ## Layer 2 — Workflow Contract
 ### Required Artifacts
@@ -63,6 +64,9 @@ Core policy requirements:
 - narrative analysis report artifact
 - final publication-style report artifact with agent decision appendix
 - skill-extraction summary artifact at `outputs/report/skill_extraction_summary.json` (required even when no candidates are found)
+- skill-refresh plan artifact at `outputs/report/skill_refresh_plan.json`
+- skill-refresh event log artifact at `outputs/report/skill_refresh_log.jsonl`
+- skill-checkpoint status artifact at `outputs/report/skill_checkpoint_status.json`
 
 ### Acceptance Checks
 - all pipeline-stage artifacts exist and are readable by downstream stages
@@ -81,6 +85,9 @@ Core policy requirements:
 - partition checks confirm category coverage/exclusivity and unique `(category, region)` keys
 - central yields/cut flows do not double count physics processes represented by both nominal and alternative MC samples
 - `outputs/report/skill_extraction_summary.json` exists, is readable, and has `status` in `{none_found, candidates_created}`
+- `outputs/report/skill_refresh_plan.json` exists and is readable
+- `outputs/report/skill_refresh_log.jsonl` exists and is readable
+- `outputs/report/skill_checkpoint_status.json` exists, is readable, and has `status = pass` for handoff-ready runs
 
 ## Layer 3 — Example Implementation
 ### Required Inputs (Current Repository)
@@ -118,35 +125,40 @@ Core policy requirements:
 - `outputs/report/data_mc_discrepancy_audit.json`
 - `outputs/report/data_mc_check_log.json`
 - `outputs/report/skill_extraction_summary.json`
+- `outputs/report/skill_refresh_plan.json`
+- `outputs/report/skill_refresh_log.jsonl`
+- `outputs/report/skill_checkpoint_status.json`
 
 ### Canonical Pipeline Stages (Current Repository)
 1. Optional: convert narrative analysis text into structured analysis JSON and produce a gap report.
 2. Run agent pre-flight fact check and resolve critical ambiguities.
-3. Parse and validate summary JSON.
-4. Apply JSON-spec-driven execution contract (including runtime mapping/deviation logging).
-5. Build sample registry.
-6. Build metadata-driven MC normalization factors for stacked components (when metadata workflow is used).
-7. Build category/region partition specification, checks, and manifest.
-8. Build signal/background strategy and CR/SR normalization map.
-9. Ingest events.
-10. Build objects.
-11. Apply selections and region masks.
-12. Produce cut flow and yields.
-13. Produce histograms for fit observables.
-14. Build signal/background mass-shape models and run spurious-signal model selection.
-15. Build statistical model and run fits.
-16. Compute discovery significance from profile likelihood ratio.
-17. Produce blinded CR/SR visualization products.
-18. Make plots and report.
-19. Run smoke tests.
-20. Run final report review and handoff assessment.
-21. Mandatory: run extract-new-skill-from-failure assessment and write any proposals to `candidate_skills/`, plus `outputs/report/skill_extraction_summary.json` even when zero candidates are created.
+3. Initialize skill-refresh/checkpoint plan and execute refresh checkpoints at phase boundaries, elapsed-time intervals, and failure-recovery boundaries.
+4. Parse and validate summary JSON.
+5. Apply JSON-spec-driven execution contract (including runtime mapping/deviation logging).
+6. Build sample registry.
+7. Build metadata-driven MC normalization factors for stacked components (when metadata workflow is used).
+8. Build category/region partition specification, checks, and manifest.
+9. Build signal/background strategy and CR/SR normalization map.
+10. Ingest events.
+11. Build objects.
+12. Apply selections and region masks.
+13. Produce cut flow and yields.
+14. Produce histograms for fit observables.
+15. Build signal/background mass-shape models and run spurious-signal model selection.
+16. Build statistical model and run fits.
+17. Compute discovery significance from profile likelihood ratio.
+18. Produce blinded CR/SR visualization products.
+19. Make plots and report.
+20. Run smoke tests.
+21. Run final report review and handoff assessment (including skill-refresh/checkpoint gate).
+22. Mandatory: run extract-new-skill-from-failure assessment and write any proposals to `candidate_skills/`, plus `outputs/report/skill_extraction_summary.json` even when zero candidates are created.
 
 ### Skill List (Current Repository)
 Core pipeline skills:
 - `core_pipeline/bootstrap_repo.md`
 - `interfaces/narrative_to_analysis_json_translator.md`
 - `governance/agent_pre_flight_fact_check.md`
+- `governance/skill_refresh_and_checkpointing.md`
 - `interfaces/json_spec_driven_execution.md`
 - `governance/full_statistics_execution_policy.md`
 - `core_pipeline/read_summary_and_validate.md`

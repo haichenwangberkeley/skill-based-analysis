@@ -56,6 +56,7 @@ Policy requirements:
 - when reporting category-combined significance, explicitly state that the combined likelihood uses category-specific background parameters and a shared signal-strength parameter across categories
 - every plot embedded in the final report must include a caption that explains plot entries and gives motivation/justification for why the plot is part of the evidence chain
 - run-level skill extraction must be executed after report generation, and the report/handoff record must reference `outputs/report/skill_extraction_summary.json`
+- report/handoff records must reference skill-refresh/checkpoint compliance artifacts from `governance/skill_refresh_and_checkpointing.md`
 
 Normalization relation to state in report:
 - `norm_factor = (sigma_pb * k_factor * filter_eff * lumi_pb) / sumw`
@@ -94,6 +95,10 @@ Normalization relation to state in report:
   - `outputs/report/data_mc_discrepancy_audit.json`
   - `outputs/report/data_mc_check_log.json`
 - post-run skill-extraction summary artifact at `outputs/report/skill_extraction_summary.json` (required even when no candidates are proposed)
+- skill-refresh/checkpoint artifacts:
+  - `outputs/report/skill_refresh_plan.json`
+  - `outputs/report/skill_refresh_log.jsonl`
+  - `outputs/report/skill_checkpoint_status.json`
 
 ### Acceptance Checks
 - section headers exist and appear in required order
@@ -123,6 +128,7 @@ Normalization relation to state in report:
 - Appendix A exists and contains at least one structured entry whenever substitutions/deviations occurred
 - report (or linked handoff note) references data-MC discrepancy status from `outputs/report/data_mc_discrepancy_audit.json`
 - report (or linked handoff note) references `outputs/report/skill_extraction_summary.json` with its status (`none_found` or `candidates_created`)
+- report (or linked handoff note) references `outputs/report/skill_checkpoint_status.json` with its status (`pass` or `fail`)
 
 ## Layer 3 — Example Implementation
 ### Output Location (Current Repository Workflow)
@@ -142,6 +148,7 @@ Normalization relation to state in report:
 - `core_pipeline/profile_likelihood_significance.md`
 - `core_pipeline/final_report_review_and_handoff.md`
 - `meta/extract_new_skill_from_failure.md`
+- `governance/skill_refresh_and_checkpointing.md`
 
 ### Example Generation Path (Current Repository Workflow)
 - generate a baseline report from pipeline report stage

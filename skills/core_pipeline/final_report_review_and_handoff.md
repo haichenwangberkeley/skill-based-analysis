@@ -22,6 +22,7 @@ Policy requirements:
 - preserve blinding policy when reviewing statistical/plot outputs
 - enforce post-run skill extraction as a completion gate; missing extraction summary is a handoff blocker
 - enforce data-MC discrepancy artifact completion as a gate; missing discrepancy artifacts are handoff blockers
+- enforce skill-refresh/checkpoint completion as a gate; missing or failing checkpoint status is a handoff blocker
 
 ## Layer 2 — Workflow Contract
 ### Inputs
@@ -34,6 +35,9 @@ Policy requirements:
 - `outputs/report/skill_extraction_summary.json`
 - `outputs/report/data_mc_discrepancy_audit.json`
 - `outputs/report/data_mc_check_log.json`
+- `outputs/report/skill_refresh_plan.json`
+- `outputs/report/skill_refresh_log.jsonl`
+- `outputs/report/skill_checkpoint_status.json`
 
 ### Review Steps
 1. Completeness check:
@@ -109,6 +113,12 @@ Policy requirements:
      - `discrepancy_investigated_no_bug_found`
    - verify `outputs/report/data_mc_check_log.json` exists and is readable
    - if this gate fails, classify run status as `partially completed` or `major failure` (not handoff-ready)
+10. Skill-refresh/checkpoint completion gate:
+   - verify `outputs/report/skill_refresh_plan.json` exists and is readable
+   - verify `outputs/report/skill_refresh_log.jsonl` exists and is readable
+   - verify `outputs/report/skill_checkpoint_status.json` exists and is readable
+   - verify checkpoint status is `pass`
+   - if this gate fails, classify run status as `partially completed` or `major failure` (not handoff-ready)
 
 ### Required Output
 Produce a structured review summary containing:
@@ -118,6 +128,7 @@ Produce a structured review summary containing:
 - handoff-readiness statement (sufficient/insufficient for continuation)
 - skill-extraction gate result and any blocking gaps
 - data-MC discrepancy gate result and any blocking gaps
+- skill-refresh/checkpoint gate result and any blocking gaps
 
 ## Layer 3 — Example Implementation
 ### Recommended Output Artifact
@@ -133,6 +144,8 @@ Produce a structured review summary containing:
   - `skill_extraction_status` (`none_found`, `candidates_created`, or `missing`)
   - `data_mc_discrepancy_checked` (bool)
   - `data_mc_discrepancy_status` (`no_substantial_discrepancy`, `discrepancy_investigated_bug_found`, `discrepancy_investigated_no_bug_found`, or `missing`)
+  - `skill_refresh_checked` (bool)
+  - `skill_refresh_status` (`pass` or `missing_or_failed`)
 
 ### Minimum Human Summary
 - one concise run-status paragraph
@@ -144,3 +157,4 @@ Produce a structured review summary containing:
 - `infrastructure/visual_verification.md`
 - `core_pipeline/final_analysis_report_agent_workflow.md`
 - `core_pipeline/profile_likelihood_significance.md`
+- `governance/skill_refresh_and_checkpointing.md`

@@ -17,6 +17,7 @@ Policy requirements:
 - do not start large computation on incomplete specifications
 - after pre-flight passes and execution begins, do not interrupt again until completion unless a hard technical failure prevents continuation
 - record any assumptions explicitly
+- initialize skill-refresh/checkpoint planning at run start and emit the first refresh checkpoint record
 
 ## Layer 2 — Workflow Contract
 ### Inputs
@@ -60,6 +61,7 @@ Produce a short pre-flight summary containing:
 - pass/fail status
 - clarified items (if any)
 - assumptions recorded before execution
+- skill-refresh initialization status for the `preflight_ready` checkpoint
 
 ## Layer 3 — Example Implementation
 ### Recommended Artifact
@@ -70,6 +72,8 @@ Produce a short pre-flight summary containing:
   - `clarifications_received` (list)
   - `assumptions` (list)
   - `ready_to_execute` (bool)
+  - `skill_refresh_initialized` (bool)
+  - `skill_refresh_checkpoint_id` (string; expected `preflight_ready`)
 
 ### Minimum Human Message
 - one concise statement that pre-flight passed or is blocked
@@ -80,3 +84,4 @@ Produce a short pre-flight summary containing:
 - `core_pipeline/sample_registry_and_normalization.md`
 - `analysis_strategy/signal_background_strategy_and_cr_constraints.md`
 - `analysis_strategy/control_region_signal_region_blinding_and_visualization.md`
+- `governance/skill_refresh_and_checkpointing.md`

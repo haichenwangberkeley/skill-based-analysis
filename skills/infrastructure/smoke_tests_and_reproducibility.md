@@ -22,6 +22,9 @@ Policy requirements:
 - smoke-test execution artifact with pass/fail status per critical stage
 - run-manifest artifact with inputs, configuration fingerprint, and code version
 - completion-status artifact indicating whether all required analysis outputs exist
+- skill-refresh plan artifact: `outputs/report/skill_refresh_plan.json`
+- skill-refresh log artifact: `outputs/report/skill_refresh_log.jsonl`
+- skill-checkpoint status artifact: `outputs/report/skill_checkpoint_status.json`
 
 ### Acceptance Checks
 - summary validation stage passes
@@ -31,6 +34,7 @@ Policy requirements:
 - blinding, histogram, yield, cut-flow, and report artifacts are all present for completion
 - reruns with same inputs/configuration produce consistent metadata fingerprints
 - for H->gammagamma resonance fitting, include a PyROOT/RooFit backend-specific smoke check and export the same standard fit/significance schemas
+- skill-refresh artifacts exist and indicate pass status before handoff
 
 ## Layer 3 — Example Implementation
 ### Smoke Tests (Current Repository)
