@@ -40,7 +40,7 @@ Policy requirements:
 - when expected sensitivity is derived from Asimov pseudo-data, state how Asimov data were generated (source PDF + parameter values from data fit) and whether generation/evaluation used sidebands-only or full mass range
 - Asimov pseudo-data figures/tables may include the full mass range (including signal window) in blinded workflows, but must be clearly labeled as expected/Asimov
 - for blinded sensitivity claims, expected significance must come from Asimov fits over the full observable range (including signal region), not from observed signal-window data
-- when discovery sensitivity is reported from Asimov pseudo-data, document that generation used the background-only hypothesis (`mu = 0`) and that the likelihood test evaluates incompatibility with the signal-plus-background model
+- when discovery sensitivity is reported from Asimov pseudo-data, document that generation used the signal-plus-background hypothesis (`mu_gen = 1`) while background-shape parameters were taken from a data fit with `mu = 0`
 - avoid inventing systematic uncertainties when not provided; use explicit placeholder language instead
 - include a mandatory appendix that documents all agent deviations, substitutions, and assumptions with justification
 - for category-resolved resonance analyses, include a category-by-category mass-window table at `m_gg = 125 +/- 2 GeV` with expected signal and expected background yields
@@ -123,7 +123,7 @@ Normalization relation to state in report:
 - systematics section contains explicit placeholder statement when systematics are unspecified
 - statistical interpretation section documents Asimov/pre-unblinding treatment when blinding is active
 - when Asimov significance is reported, the report explicitly distinguishes expected (Asimov) from observed significance and records generation provenance
-- when Asimov discovery sensitivity is reported, the report explicitly documents `mu_gen = 0` background-only generation and full-range evaluation including the signal region
+- when Asimov discovery sensitivity is reported, the report explicitly documents `mu_gen = 1` signal-plus-background generation, the background-parameter source from the `mu = 0` fit, and full-range evaluation including the signal region
 - statistical interpretation section states the backend used for the reported fit/significance numbers and confirms `pyroot_roofit` is primary for H->gammagamma
 - Appendix A exists and contains at least one structured entry whenever substitutions/deviations occurred
 - report (or linked handoff note) references data-MC discrepancy status from `outputs/report/data_mc_discrepancy_audit.json`

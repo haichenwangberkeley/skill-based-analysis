@@ -57,7 +57,7 @@ Core policy requirements:
 - fit-backend declaration artifact per fit with `pyroot_roofit` primary-backend provenance and any optional cross-check backend notes
 - discovery-significance artifact per fit
 - optional Asimov expected-significance artifact per fit with generation provenance
-- Asimov sensitivity artifacts should document full-range generation/evaluation and tested generation hypothesis (for example `mu_gen = 0` for discovery sensitivity)
+- Asimov sensitivity artifacts should document full-range generation/evaluation and tested generation hypothesis (for expected discovery sensitivity: `mu_gen = 1` with background-shape parameters sourced from a `mu = 0` data fit)
 - blinding-summary artifact and blinded region-visualization artifact set
 - visual-verification artifact set for required diagnostics
 - data-MC discrepancy artifacts (`outputs/report/data_mc_discrepancy_audit.json`, `outputs/report/data_mc_check_log.json`) for every run, including zero-discrepancy runs
@@ -174,6 +174,7 @@ Core pipeline skills:
 - `analysis_strategy/signal_shape_and_spurious_signal_model_selection.md`
 - `core_pipeline/systematics_and_nuisances.md`
 - `core_pipeline/workspace_and_fit_pyhf.md`
+- `core_pipeline/asimov_expected_significance_splusb.md`
 - `core_pipeline/plotting_and_report.md`
 - `core_pipeline/final_analysis_report_agent_workflow.md`
 - `analysis_strategy/control_region_signal_region_blinding_and_visualization.md`
